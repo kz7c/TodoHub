@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TodoHub.Views.SettingPage">
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="30,0"
+            Spacing="25">
+            <Label 
+                Text="設定"
+                Style="{StaticResource Headline}"
+                SemanticProperties.HeadingLevel="Level1"/>
+
+
+            <!-- 変更ボタン -->
+            <Button
+                x:Name="ChangeTokenBtn"
+                Text="トークンの変更"
+                Clicked="ChangeTokenBtn_Clicked"
+                BackgroundColor="Red"
+                TextColor="White"
+                HorizontalOptions="Fill" />
+
+            <!-- フォーム（最初は非表示） -->
+            <VerticalStackLayout
+                x:Name="TokenForm"
+                IsVisible="False">
+
+                <Label 
+                    Text="トークンの変更"
+                    FontSize="20"/>
+
+                <Entry 
+                    x:Name="TokenEntry"
+                    Placeholder="github_pat_XXXXXXXXXXXXX"
+                    IsPassword="True" />
+
+                <Button
+                    x:Name="RegisterTokenBtn"
+                    Text="変更"
+                    Clicked="RegisterTokenBtn_Clicked"
+                    HorizontalOptions="Fill" />
+            </VerticalStackLayout>
+
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

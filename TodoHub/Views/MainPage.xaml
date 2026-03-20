@@ -7,6 +7,11 @@
         <VerticalStackLayout
             Padding="30,0"
             Spacing="25">
+            <Label 
+                x:Name="MainTitleLabel"
+                Text="ホーム"
+                Style="{StaticResource Headline}"
+                SemanticProperties.HeadingLevel="Level1"/>
 
             <Label
                 x:Name="MainArea"

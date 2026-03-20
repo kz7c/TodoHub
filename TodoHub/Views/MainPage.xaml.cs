@@ -6,7 +6,11 @@
         public MainPage()
         {
             InitializeComponent();
-            TodoLoad();
+            if (!string.IsNullOrEmpty(Preferences.Default.Get("github_repo", "")))
+            {
+                MainTitleLabel.Text = Preferences.Default.Get("github_repo", "");
+                TodoLoad();
+            }
         }
 
         private void TodoLoad()

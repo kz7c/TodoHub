@@ -12,7 +12,7 @@
                 SemanticProperties.HeadingLevel="Level1"/>
 
 
-            <!-- 変更ボタン -->
+            <!-- トークン変更ボタン -->
             <Button
                 x:Name="ChangeTokenBtn"
                 Text="トークンの変更"
@@ -21,9 +21,9 @@
                 TextColor="White"
                 HorizontalOptions="Fill" />
 
-            <!-- フォーム（最初は非表示） -->
+            <!-- トークン変更フォーム（最初は非表示） -->
             <VerticalStackLayout
-                x:Name="TokenForm"
+                x:Name="ChangeTokenForm"
                 IsVisible="False">
 
                 <Label 
@@ -31,14 +31,47 @@
                     FontSize="20"/>
 
                 <Entry 
-                    x:Name="TokenEntry"
+                    x:Name="ChangeTokenEntry"
                     Placeholder="github_pat_XXXXXXXXXXXXX"
                     IsPassword="True" />
 
                 <Button
                     x:Name="RegisterTokenBtn"
-                    Text="変更"
+                    Text="トークンの登録"
                     Clicked="RegisterTokenBtn_Clicked"
+                    HorizontalOptions="Fill" />
+            </VerticalStackLayout>
+
+
+            <!--============================================================-->
+
+
+            <!-- リポジトリ変更ボタン -->
+            <Button
+                x:Name="ChangeRepoBtn"
+                Text="リポジトリの変更"
+                Clicked="ChangeRepoBtn_Clicked"
+                BackgroundColor="Green"
+                TextColor="White"
+                HorizontalOptions="Fill" />
+
+            <!-- リポジトリ変更フォーム（最初は非表示） -->
+            <VerticalStackLayout
+                x:Name="ChangeRepoForm"
+                IsVisible="False">
+
+                <Label 
+                    Text="リポジトリの変更"
+                    FontSize="20"/>
+
+                <Entry 
+                    x:Name="ChangeRepoEntry"
+                    Placeholder="user/repo" />
+
+                <Button
+                    x:Name="RegisterRepoBtn"
+                    Text="リポジトリの登録"
+                    Clicked="RegisterRepoBtn_Clicked"
                     HorizontalOptions="Fill" />
             </VerticalStackLayout>
 

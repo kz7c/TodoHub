@@ -15,7 +15,8 @@ namespace TodoHub.Views
             InitializeComponent();
             if (!string.IsNullOrEmpty(Preferences.Default.Get("github_repo", "")))
             {
-                MainTitleLabel.Text = Preferences.Default.Get("github_repo", "");
+                // MainTitleLabel.Text = Preferences.Default.Get("github_repo", "");
+                this.Title = Preferences.Default.Get("github_repo", "");
                 TodoLoad();
             }
         }
@@ -31,12 +32,14 @@ namespace TodoHub.Views
                 // リポジトリが設定されていない場合は処理を中断
                 if (string.IsNullOrEmpty(repo))
                 {
+                    MainMessage.IsVisible = true;
                     MainMessage.Text = "リポジトリが設定されていません。";
                     return;
                 }
 
                 if (string.IsNullOrEmpty(token))
                 {
+                    MainMessage.IsVisible = true;
                     MainMessage.Text = "トークンが設定されていません。";
                     return;
                 }
@@ -45,20 +48,19 @@ namespace TodoHub.Views
 
                 // APIを叩いてTodoを取得する処理------------------------------------------------------
                 // HttpClientのインスタンスを作成
-                var MainLoad = new HttpClient();
+                var APIclient = new HttpClient();
 
                 // ユーザーエージェントを設定（GitHub APIはユーザーエージェントが必要）
-                MainLoad.DefaultRequestHeaders.UserAgent.Add(
+                APIclient.DefaultRequestHeaders.UserAgent.Add(
                     new ProductInfoHeaderValue("TodoHubApp", "1.0"));
 
                 // トークン使う場合
-                MainLoad.DefaultRequestHeaders.Authorization =
+                APIclient.DefaultRequestHeaders.Authorization =
                     new AuthenticationHeaderValue("Bearer", token);
 
-                // API叩く
                 var url = "https://api.github.com/repos/" + repo + "/issues";
 
-                var response = await MainLoad.GetAsync(url);
+                var response = await APIclient.GetAsync(url);
                 var json = await response.Content.ReadAsStringAsync();
 
 
@@ -100,7 +102,7 @@ namespace TodoHub.Views
                     };
 
 
-                    item.Children.Add(new Label { Text = title, FontSize = 20 });
+                    item.Children.Add(new Label { Text = title });
                     item.Children.Add(new Label { Text = $"更新日: {updated}" });
                     // item.Children.Add(new Label { Text = $"コメント数: {comments}" });
 
@@ -150,7 +152,9 @@ namespace TodoHub.Views
             }
             catch (Exception)
             {
+                MainMessage.IsVisible = true;
                 MainMessage.Text = "エラーが発生しました　\n ネットワークの設定や　\n リポジトリ・トークンの設定などを \n 見直してください。";
+                return;
             }
         }
     }

@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TodoHub.Views.SettingPage">
+             x:Class="TodoHub.Views.SettingPage"
+             Title="設定">
     <ScrollView>
         <VerticalStackLayout
-            Padding="30,0"
+            Padding="20,10,20,0"
             Spacing="25">
-            <Label 
+            
+            <!-- <Label 
                 Text="設定"
                 Style="{StaticResource Headline}"
-                SemanticProperties.HeadingLevel="Level1"/>
+                SemanticProperties.HeadingLevel="Level1"/> -->
 
 
             <!-- トークン変更ボタン -->

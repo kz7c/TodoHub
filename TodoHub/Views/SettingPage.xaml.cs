@@ -22,7 +22,6 @@ namespace TodoHub.Views
         }
 
 
-        [Obsolete]
         private async void RegisterTokenBtn_Clicked(object? sender, EventArgs e)// トークンの登録ボタンの動作
         {
             // 登録ボタンの動作を無効化

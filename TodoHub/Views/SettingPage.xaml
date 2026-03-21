@@ -75,7 +75,10 @@
                     HorizontalOptions="Fill" />
             </VerticalStackLayout>
 
-
+            <Label
+                 Text="設定を適用するにはアプリを再起動してください。"
+                 FontSize="12"
+                 TextColor="Gray" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

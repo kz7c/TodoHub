@@ -1,12 +1,45 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TodoHub.Views.CreatePage">
-    <VerticalStackLayout>
-        <Label 
-            Text="新規作成"
-            Style="{StaticResource Headline}"
-            SemanticProperties.HeadingLevel="Level1"/>
+             x:Class="TodoHub.Views.CreatePage"
+             Title="新規作成">
+	
+	<!--保存ボタン-->
+	<ContentPage.ToolbarItems>
+		<ToolbarItem
+			x:Name="SavingBtn"
+			Text="保存"
+			Priority="0"
+			Order="Primary"
+			Clicked="SavingBtn_Clicked" />
+	</ContentPage.ToolbarItems>
+	
+	<!--編集エリア-->
+	<Grid VerticalOptions="Fill">
+        <Grid 
+            x:Name="MainGrid"
+            VerticalOptions="Fill"
+            RowDefinitions="Auto,Auto,*,20"
+            Padding="20,10,20,0">
+            <!-- <Label 
+                x:Name="MainTitleLabel"
+                Text="新規作成"
+                Style="{StaticResource Headline}"
+                SemanticProperties.HeadingLevel="Level1"/> -->
 
-    </VerticalStackLayout>
+            <Entry
+				x:Name="CreateTitle"
+                Placeholder="タイトル"
+                Grid.Row="1"
+                Margin="0,0,0,20" />
+
+            <Editor
+				x:Name="CreateBody"
+                Grid.Row="2"
+                Placeholder="メモを入力..."
+                VerticalOptions="Fill"
+                HorizontalOptions="Fill" />
+
+        </Grid>
+    </Grid>
 </ContentPage>

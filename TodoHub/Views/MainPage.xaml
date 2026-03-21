@@ -7,6 +7,7 @@
         <VerticalStackLayout
             Padding="30,0"
             Spacing="25">
+
             <Label 
                 x:Name="MainTitleLabel"
                 Text="ホーム"
@@ -14,15 +15,14 @@
                 SemanticProperties.HeadingLevel="Level1"/>
 
             <Label
-                x:Name="MainArea"
-                Text="初期値"
-            />
+                x:Name="MainMessage"
+                HorizontalOptions="Center"
+                HorizontalTextAlignment="Center"
+                Text=""/>
 
-            <Button
-                x:Name="CounterBtn"
-                Text="Click me" 
-                SemanticProperties.Hint="Counts the number of times you click"
-                HorizontalOptions="Fill" />
+            <VerticalStackLayout
+                x:Name="TodoList" />
+
         </VerticalStackLayout>
     </ScrollView>
 

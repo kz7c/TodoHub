@@ -72,9 +72,13 @@
             </VerticalStackLayout>
 
             <Label
-                 Text="設定を適用するにはアプリを再起動してください。"
-                 FontSize="12"
-                 TextColor="Gray" />
+                    Text="設定を適用するにはアプリを再起動してください。"
+                    FontSize="12"
+                    TextColor="Gray" />
+			<Label
+                    x:Name="version_label"    
+	                FontSize="12"
+	                TextColor="Gray" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

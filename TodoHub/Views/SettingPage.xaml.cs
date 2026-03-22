@@ -12,6 +12,7 @@ namespace TodoHub.Views
         public SettingPage()
         {
             InitializeComponent();
+            version_label.Text = $"Version: {AppInfo.Current.VersionString}";
         }
 
 

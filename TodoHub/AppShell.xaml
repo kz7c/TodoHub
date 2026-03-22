@@ -20,7 +20,7 @@
 
         <Tab Title="作成"
              Icon="edit.png">
-            <ShellContent ContentTemplate="{DataTemplate local:CreatePage}" />
+            <ShellContent ContentTemplate="{DataTemplate local:EditPage}" />
         </Tab>
 
         <Tab Title="設定"

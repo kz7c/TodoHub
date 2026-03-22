@@ -21,6 +21,11 @@ namespace TodoHub.Views
             }
         }
 
+        private async void ReLoadBtn_Clicked(object? sender, EventArgs e)
+        {
+            TodoLoad();
+        }
+
         private async void TodoLoad()
         {
             try
@@ -52,7 +57,7 @@ namespace TodoHub.Views
 
                 // ユーザーエージェントを設定（GitHub APIはユーザーエージェントが必要）
                 APIclient.DefaultRequestHeaders.UserAgent.Add(
-                    new ProductInfoHeaderValue("TodoHubApp", "1.0"));
+                    new ProductInfoHeaderValue(AppInfo.Name, AppInfo.BuildString));
 
                 // トークン使う場合
                 APIclient.DefaultRequestHeaders.Authorization =

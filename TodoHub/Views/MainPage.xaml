@@ -3,17 +3,22 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TodoHub.Views.MainPage"
              Title="ホーム">
-
+	
+	<!--更新ボタン-->
+	<ContentPage.ToolbarItems>
+		<ToolbarItem
+			x:Name="ReLoadBtn"
+			Text="更新"
+			Priority="0"
+			Order="Primary"
+			Clicked="ReLoadBtn_Clicked" />
+	</ContentPage.ToolbarItems>
+	
     <ScrollView>
         <VerticalStackLayout
             Padding="20,10,20,0"
             Spacing="25">
 
-            <!-- <Label 
-                x:Name="MainTitleLabel"
-                Text="ホーム"
-                Style="{StaticResource Headline}"
-                SemanticProperties.HeadingLevel="Level1"/>  -->
 
             <Label
                 x:Name="MainMessage"

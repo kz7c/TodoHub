@@ -13,9 +13,17 @@
 			Order="Primary"
 			Clicked="SavingBtn_Clicked" />
 	</ContentPage.ToolbarItems>
-	
+
+
 	<!--編集エリア-->
 	<Grid VerticalOptions="Fill">
+		<!--ローディング-->
+		<Label
+			x:Name="LoadingLabel"
+			Text="読み込み中..."
+            HorizontalOptions="Center"
+            VerticalOptions="Center" 
+		/>
         <Grid 
             x:Name="MainGrid"
             VerticalOptions="Fill"

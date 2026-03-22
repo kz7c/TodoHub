@@ -7,13 +7,84 @@ public partial class EditPage : ContentPage
     private int? _issueNum;
     public EditPage(int? issueNum = null)
 	{
-        // ここの順番は要検討
         InitializeComponent();
         _issueNum = issueNum;
+        
+        if(issueNum == null )
+        {
+            Title = "新規作成";
+        }
 
     }
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
 
-    // 保存ボタンが押されたときの処理
+        MainGrid.IsVisible = false;
+        LoadingLabel.IsVisible = true;
+
+        if (_issueNum != null)
+        {
+            await issue_load(); // ← ここでちゃんと待つ
+        }
+
+        MainGrid.IsVisible = true;
+        LoadingLabel.IsVisible = false;
+    }
+
+    // issueNumがnullでない場合、つまり編集モードの場合に呼び出されるメソッド--------------------------------------------------
+    private async Task issue_load()
+    {
+        try
+        {
+            // トークンとリポジトリの情報を取得---------------------------------------------------
+            string? token = await SecureStorage.Default.GetAsync("github_token");
+            string repo = Preferences.Default.Get("github_repo", "");
+            // リポジトリが設定されていない場合は処理を中断
+            if (string.IsNullOrEmpty(repo))
+            {
+                return;
+            }
+            // トークンが設定されていない場合は処理を中断
+            if (string.IsNullOrEmpty(token))
+            {
+                return;
+            }
+
+            // APIを叩いてTodoを取得する処理------------------------------------------------------
+            // HttpClientのインスタンスを作成
+            var APIclient = new HttpClient();
+            // ユーザーエージェントを設定
+            APIclient.DefaultRequestHeaders.UserAgent.Add(
+                new ProductInfoHeaderValue(AppInfo.Name, AppInfo.BuildString));
+            
+            // トークン
+            APIclient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", token);
+
+            string url = "https://api.github.com/repos/" + repo + "/issues/" + _issueNum;
+
+            var response = await APIclient.GetAsync(url);
+            var json = await response.Content.ReadAsStringAsync();
+            JsonDocument issueData = JsonDocument.Parse(json);
+
+            // タイトルと内容をUIに反映
+            string issue_Title = issueData.RootElement.GetProperty("title").GetString() ?? "";
+            CreateTitle.Text = issue_Title;
+            Title = "編集中: " + issue_Title;
+            CreateBody.Text = issueData.RootElement.GetProperty("body").GetString();
+        }
+
+        catch (Exception)
+        {
+            await DisplayAlertAsync("", "エラーが発生しました。", "OK");
+        }
+    }
+
+
+
+
+    // 保存ボタンが押されたときの処理---------------------------------------------------------------------------------------
     private async void SavingBtn_Clicked(object? sender, EventArgs e)
 	{
         // 保存ボタンの動作を無効化
@@ -60,11 +131,11 @@ public partial class EditPage : ContentPage
             // HttpClientのインスタンスを作成
             var APIclient = new HttpClient();
 
-            // ユーザーエージェントを設定（GitHub APIはユーザーエージェントが必要）
+            // ユーザーエージェントを設定
             APIclient.DefaultRequestHeaders.UserAgent.Add(
-                new ProductInfoHeaderValue("TodoHubApp", "1.0"));
+                new ProductInfoHeaderValue(AppInfo.Name, AppInfo.BuildString));
 
-            // トークン使う場合
+            // トークン
             APIclient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", token);
 
@@ -99,19 +170,24 @@ public partial class EditPage : ContentPage
 
             await DisplayAlertAsync("", result, "OK");
 
-            // 入力領域の初期化
-            CreateTitle.Text = "";
-            CreateBody.Text = "";
-
-        // MainPageに戻る
-            await Navigation.PushAsync(new MainPage());
+            if (_issueNum == null)
+            {   // 新規作成の場合、入力領域の初期化
+                CreateTitle.Text = "";
+                CreateBody.Text = "";
+            }
+            else
+            {   // 編集の場合、前の画面に戻る
+                await Navigation.PopAsync();
+            }
 
 
         }
+
         catch (Exception)
         {
             await DisplayAlertAsync("", "エラーが発生しました。", "OK");
         }
+
         finally // 最後に保存ボタンの動作を再有効化
         {
             SavingBtn.IsEnabled = true;

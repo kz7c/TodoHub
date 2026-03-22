@@ -4,11 +4,14 @@ namespace TodoHub.Views;
 
 public partial class EditPage : ContentPage
 {
-
-	public EditPage()
+    private int? _issueNum;
+    public EditPage(int? issueNum = null)
 	{
-		InitializeComponent();
-	}
+        // ここの順番は要検討
+        InitializeComponent();
+        _issueNum = issueNum;
+
+    }
 
     // 保存ボタンが押されたときの処理
     private async void SavingBtn_Clicked(object? sender, EventArgs e)
@@ -17,7 +20,7 @@ public partial class EditPage : ContentPage
         SavingBtn.IsEnabled = false;
         try
         {
-            // トークンとリポジトリの情報を取得---------------------------------------------------
+        // トークンとリポジトリの情報を取得---------------------------------------------------
             string? token = await SecureStorage.Default.GetAsync("github_token");
             string repo = Preferences.Default.Get("github_repo", "");
 
@@ -33,9 +36,10 @@ public partial class EditPage : ContentPage
                 return;
             }
 
-            // 内容が空の場合は何もしない。
+            // 内容が空の場合
             if (string.IsNullOrEmpty(CreateBody.Text))
             {
+                await DisplayAlertAsync("", "内容が無いよう", "OK");
                 return;
             }
 
@@ -52,8 +56,7 @@ public partial class EditPage : ContentPage
                 }
             }
 
-
-            // APIを叩いてTodoを取得する処理------------------------------------------------------
+        // APIを叩いてTodoを取得する処理------------------------------------------------------
             // HttpClientのインスタンスを作成
             var APIclient = new HttpClient();
 
@@ -65,8 +68,21 @@ public partial class EditPage : ContentPage
             APIclient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", token);
 
-            var url = "https://api.github.com/repos/" + repo + "/issues";
+         
+        // APIのエンドポイントURLを設定
+            string url;
+            if (_issueNum == null)
+            {// 新規作成の場合
+                url = "https://api.github.com/repos/" + repo + "/issues";
 
+            }
+            else
+            {// 編集の場合
+                url = "https://api.github.com/repos/" + repo + "/issues/" + _issueNum;
+
+            }
+
+        // リクエストを作成
             var issue = new
             {
                 title = CreateTitle.Text,
@@ -86,6 +102,11 @@ public partial class EditPage : ContentPage
             // 入力領域の初期化
             CreateTitle.Text = "";
             CreateBody.Text = "";
+
+        // MainPageに戻る
+            await Navigation.PushAsync(new MainPage());
+
+
         }
         catch (Exception)
         {

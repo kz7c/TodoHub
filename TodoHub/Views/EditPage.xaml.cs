@@ -2,10 +2,10 @@ using System.Net.Http.Headers;
 using System.Text.Json;
 namespace TodoHub.Views;
 
-public partial class CreatePage : ContentPage
+public partial class EditPage : ContentPage
 {
 
-	public CreatePage()
+	public EditPage()
 	{
 		InitializeComponent();
 	}

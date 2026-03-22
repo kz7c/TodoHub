@@ -8,12 +8,6 @@
             Padding="20,10,20,0"
             Spacing="25">
             
-            <!-- <Label 
-                Text="設定"
-                Style="{StaticResource Headline}"
-                SemanticProperties.HeadingLevel="Level1"/> -->
-
-
             <!-- トークン変更ボタン -->
             <Button
                 x:Name="ChangeTokenBtn"

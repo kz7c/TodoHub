@@ -1,0 +1,47 @@
+name: Build Windows & Android
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: .NETインストール
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: MAUIワークロード
+        run: dotnet workload install maui
+
+      # 🪟 Windowsビルド
+      - name: Windowsビルド
+        run: dotnet publish -f net10.0-windows10.0.19041.0 -c Release -o publish/windows
+
+      # 🪟 ZIP化（名前変更）
+      - name: WindowsをZIP化
+        run: powershell Compress-Archive -Path publish/windows/* -DestinationPath TodoHub-Windows-${{ github.ref_name }}.zip
+
+      # 🤖 Androidビルド（APK）
+      - name: Androidビルド
+        run: dotnet publish -f net10.0-android -c Release -o publish/android /p:AndroidPackageFormat=apk
+
+      # 🤖 APK名前変更
+      - name: APK名前変更
+        run: ren publish/android/*.apk TodoHub-Android-${{ github.ref_name }}.apk
+
+      # 📦 Releaseにアップロード
+      - name: Releaseにアップロード
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          files: |
+            TodoHub-Windows-*.zip
+            publish/android/*.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

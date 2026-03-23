@@ -1,3 +1,11 @@
 <Solution>
-  <Project Path="TodoHub/TodoHub.csproj" />
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Project Path="TodoHub/TodoHub.csproj">
+    <Platform Solution="*|x64" Project="x64" />
+    <Deploy Solution="*|Any CPU" />
+    <Deploy Solution="Release|x64" />
+  </Project>
 </Solution>

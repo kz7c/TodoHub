@@ -1,4 +1,5 @@
 name: Build Windows & Android
+
 on:
   push:
     tags:
@@ -9,7 +10,8 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: ソース取得
+        uses: actions/checkout@v4
 
       - name: .NETインストール
         uses: actions/setup-dotnet@v4
@@ -23,17 +25,27 @@ jobs:
       - name: Windowsビルド
         run: dotnet publish -f net10.0-windows10.0.19041.0 -c Release -o publish/windows
 
-      # 🪟 ZIP化（名前変更）
+      # 🪟 ZIP化
       - name: WindowsをZIP化
         run: powershell Compress-Archive -Path publish/windows/* -DestinationPath TodoHub-Windows-${{ github.ref_name }}.zip
 
-      # 🤖 Androidビルド（APK）
+      # 🤖 Androidビルド（APK強制）
       - name: Androidビルド
-        run: dotnet publish -f net10.0-android -c Release -o publish/android /p:AndroidPackageFormat=apk
+        run: dotnet publish -f net10.0-android -c Release -o publish/android -p:AndroidPackageFormat=apk -p:BuildApk=true
 
-      # 🤖 APK名前変更
+      # 🔍 出力確認（デバッグ用）
+      - name: Android出力確認
+        run: dir publish/android
+
+      # 🤖 APKリネーム（安全版）
       - name: APK名前変更
-        run: ren publish/android/*.apk TodoHub-Android-${{ github.ref_name }}.apk
+        run: |
+          $apk = Get-ChildItem publish/android/*.apk -ErrorAction SilentlyContinue | Select-Object -First 1
+          if ($apk) {
+            Rename-Item $apk.FullName "TodoHub-Android-${{ github.ref_name }}.apk"
+          } else {
+            Write-Host "APKが見つからないためリネームをスキップ"
+          }
 
       # 📦 Releaseにアップロード
       - name: Releaseにアップロード

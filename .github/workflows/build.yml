@@ -45,7 +45,7 @@ jobs:
         run: |
           $apk = Get-ChildItem publish/android/*-Signed.apk | Select-Object -First 1
           if ($apk) {
-            Rename-Item $apk.FullName "publish/android/TodoHub-Android-${{ github.ref_name }}.apk"
+            Rename-Item $apk.FullName -NewName "TodoHub-Android-${{ github.ref_name }}.apk"
           } else {
             Write-Host "APKが見つからないためリネームをスキップ"
           }

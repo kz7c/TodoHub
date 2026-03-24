@@ -19,6 +19,11 @@ namespace TodoHub.Views
                 this.Title = Preferences.Default.Get("github_repo", "");
                 TodoLoad();
             }
+            else
+            {
+                MainMessage.IsVisible = true;
+                MainMessage.Text = "リポジトリが設定されていません。";
+            }
         }
 
         private async void ReLoadBtn_Clicked(object? sender, EventArgs e)

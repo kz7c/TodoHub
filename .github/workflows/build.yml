@@ -43,9 +43,9 @@ jobs:
       # 🤖 APKリネーム（安全版）
       - name: APK名前変更
         run: |
-          $apk = Get-ChildItem publish/android/*.apk -ErrorAction SilentlyContinue | Select-Object -First 1
+          $apk = Get-ChildItem publish/android/*-Signed.apk | Select-Object -First 1
           if ($apk) {
-            Rename-Item $apk.FullName "TodoHub-Android-${{ github.ref_name }}.apk"
+            Rename-Item $apk.FullName "publish/android/TodoHub-Android-${{ github.ref_name }}.apk"
           } else {
             Write-Host "APKが見つからないためリネームをスキップ"
           }
@@ -57,6 +57,6 @@ jobs:
           tag_name: ${{ github.ref_name }}
           files: |
             TodoHub-Windows-*.zip
-            TodoHub-Android-*.apk
+            publish/android/TodoHub-Android-*.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

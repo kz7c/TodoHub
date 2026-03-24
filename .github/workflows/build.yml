@@ -9,6 +9,9 @@ jobs:
   build:
     runs-on: windows-latest
 
+    permissions:
+      contents: write
+    
     steps:
       - name: ソース取得
         uses: actions/checkout@v4

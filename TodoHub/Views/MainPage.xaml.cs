@@ -54,6 +54,8 @@ namespace TodoHub.Views
                     return;
                 }
 
+                // エラーメッセージを非表示にする
+                MainMessage.IsVisible = false;
 
 
                 // APIを叩いてTodoを取得する処理------------------------------------------------------
